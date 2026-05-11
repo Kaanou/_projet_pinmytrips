@@ -82,17 +82,35 @@ input[type="file"]{padding:.5rem;background:var(--color-surface-2)}
 .checkbox-label{display:flex;align-items:center;gap:.5rem;cursor:pointer}
 .form-actions{display:flex;justify-content:space-between;margin-top:1rem;gap:1rem}
 .marker-pin{width:20px;height:20px;background:var(--color-primary);border:2px solid white;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 4px 10px rgba(0,0,0,.25)}
+
+.btn-locate {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 500;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: .7rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @media (max-width:900px){
   .app{grid-template-columns:1fr;display:block}
   .panel{position:fixed;inset:0;height:100vh;transform:translateX(0);transition:transform .3s;padding-bottom:80px}
   .panel.hidden{transform:translateX(-100%)}
   .map-shell{position:fixed;inset:0;z-index:1}
-  .nav-bar{position:fixed;bottom:0;left:0;right:0;background:var(--color-surface);border-top:1px solid var(--color-border);display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:20}
+  .mobile-nav{position:fixed;bottom:0;left:0;right:0;background:var(--color-surface);border-top:1px solid var(--color-border);display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:20}
   .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;padding:1rem .5rem;font-size:.75rem;color:var(--color-text-muted);cursor:pointer}
   .nav-item.active{color:var(--color-primary)}
   .floating-detail{bottom:calc(env(safe-area-inset-bottom) + 80px)}
 }
 @media (min-width:901px){
-  .nav-bar{display:none}
+  .mobile-nav{display:none}
   .panel.hidden{transform:none}
 }

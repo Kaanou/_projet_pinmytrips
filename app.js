@@ -17,6 +17,7 @@ const refs = {
   addPlaceButton: document.getElementById('addPlaceButton'),
   closeModalButton: document.getElementById('closeModalButton'),
   closeDetailButton: document.getElementById('closeDetailButton'),
+  locateMe: document.getElementById('locateMe'),
   deleteButton: document.getElementById('btnDelete'),
   modalTitle: document.getElementById('modalTitle'),
   formFields: {
@@ -319,6 +320,20 @@ function toggleTheme() {
   applyTheme(current === 'light' ? 'dark' : 'light');
 }
 
+function handlePhotoSelect(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    refs.formFields.photoB64.value = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function locateUser() {
+  map.locate({ setView: true, maxZoom: 14 });
+}
+
 function switchTab(tab) {
   const activeClass = 'active';
   const items = Array.from(document.querySelectorAll('.nav-item'));
@@ -345,8 +360,17 @@ function setupListeners() {
   refs.addPlaceButton.addEventListener('click', () => openModal());
   refs.closeModalButton.addEventListener('click', closeModal);
   refs.closeDetailButton.addEventListener('click', hideDetail);
+  refs.locateMe?.addEventListener('click', locateUser);
+  refs.formFields.photo.addEventListener('change', handlePhotoSelect);
   refs.deleteButton.addEventListener('click', deleteCurrentPlace);
   refs.placeForm.addEventListener('submit', saveCurrentPlace);
+
+  map.on('contextmenu', (e) => {
+    openModal();
+    refs.formFields.lat.value = e.latlng.lat.toFixed(6);
+    refs.formFields.lng.value = e.latlng.lng.toFixed(6);
+  });
+
   refs.modalBackdrop.addEventListener('click', event => {
     if (event.target === refs.modalBackdrop) closeModal();
   });
@@ -356,6 +380,9 @@ function setupListeners() {
 }
 
 async function init() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(console.error);
+  }
   applyTheme(getSavedTheme());
   setupListeners();
   places = await getAllPlaces();

@@ -8,6 +8,7 @@
   <meta name="apple-mobile-web-app-title" content="PinMyTrips" />
   <meta name="theme-color" content="#0f5c5f" />
   <title>PinMyTrips</title>
+  <link rel="manifest" href="manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&f[]=clash-display@500,600&display=swap" rel="stylesheet">
@@ -41,12 +42,24 @@
 
     <main class="map-shell">
       <div id="map"></div>
+      <button type="button" class="btn-locate" id="locateMe" aria-label="Ma position">
+        <i data-feather="crosshair"></i>
+      </button>
       <div class="floating-detail" id="detailPanel" aria-hidden="true">
         <div class="detail-cover" id="detailCover">
           <button type="button" class="detail-close" id="closeDetailButton" aria-label="Fermer le détail"><i data-feather="x"></i></button>
         </div>
         <div class="detail-body" id="detailBody"></div>
       </div>
+
+      <nav class="mobile-nav">
+        <button class="nav-item active" onclick="switchTab('list')">
+          <i data-feather="list"></i><span>Liste</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('map')">
+          <i data-feather="map"></i><span>Carte</span>
+        </button>
+      </nav>
     </main>
   </div>
 

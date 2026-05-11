@@ -1,0 +1,17 @@
+{
+  "name": "PinMyTrips - Carnet de Voyage",
+  "short_name": "PinMyTrips",
+  "description": "Épinglez vos meilleurs souvenirs de voyage.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f5c5f",
+  "theme_color": "#0f5c5f",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/854/854878.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
