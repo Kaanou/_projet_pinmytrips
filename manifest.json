@@ -3,6 +3,7 @@
   "short_name": "PinMyTrips",
   "description": "Épinglez vos meilleurs souvenirs de voyage.",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#0f5c5f",
   "theme_color": "#0f5c5f",
