@@ -24,6 +24,7 @@ const refs = {
   deleteButton: document.getElementById('btnDelete'),
   modalTitle: document.getElementById('modalTitle'),
   profileButton: document.getElementById('profileButton'),
+  homeButton: document.getElementById('homeButton'),
   profileAvatar: document.getElementById('profileAvatar'),
   profileName: document.getElementById('profileName'),
   profileRole: document.getElementById('profileRole'),
@@ -200,6 +201,12 @@ function closeProfileOverlay() {
   refs.profileOverlay.classList.remove('open');
   refs.profileOverlay.setAttribute('aria-hidden', 'true');
   refs.profileForm.reset();
+}
+
+function openWelcomeScreen() {
+  renderWelcomeProfiles();
+  refs.welcomeScreen.classList.remove('hidden');
+  refs.welcomeScreen.setAttribute('aria-hidden', 'false');
 }
 
 function showWelcomeScreen() {
@@ -528,6 +535,7 @@ function setupListeners() {
   refs.formFields.photo.addEventListener('change', handlePhotoSelect);
   refs.deleteButton.addEventListener('click', deleteCurrentPlace);
   refs.placeForm.addEventListener('submit', saveCurrentPlace);
+  refs.homeButton.addEventListener('click', openWelcomeScreen);
   refs.profileButton.addEventListener('click', openProfileOverlay);
   refs.closeProfileButton.addEventListener('click', closeProfileOverlay);
   refs.profileForm.addEventListener('submit', event => {
