@@ -1,195 +1,88 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="PinMyTrips" />
-  <meta name="theme-color" content="#0f5c5f" />
-  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/854/854878.png" />
-  <title>PinMyTrips</title>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" /><meta name="theme-color" content="#0f5c5f" />
+  <title>PinMyTrips - Carnet de voyages en famille</title>
   <link rel="manifest" href="manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&f[]=clash-display@500,600&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&f[]=clash-display@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="app">
-    <aside class="panel" id="panel">
-      <div class="panel-header">
-        <div class="brand">
-          <div>
-            <h1>PinMyTrips</h1>
-            <p class="brand-subtitle">Carnet familial de voyages et mur de souvenirs.</p>
-          </div>
-          <div class="brand-actions">
-            <button type="button" class="btn-icon" id="homeButton" aria-label="Retour à l’accueil"><i data-feather="home"></i><span>Accueil</span></button>
-            <button type="button" class="btn-icon" id="profileButton" aria-label="Ouvrir le menu Famille"><i data-feather="users"></i><span>Famille</span></button>
-            <button type="button" class="btn-icon" id="themeButton" aria-label="Basculer le thème"><i data-feather="moon"></i><span>Thème</span></button>
-            <button type="button" class="btn-icon" id="exportButton" aria-label="Exporter les données"><i data-feather="download"></i><span>Exporter</span></button>
-            <label class="btn-icon" aria-label="Importer les données">
-              <i data-feather="upload"></i><span>Importer</span>
-              <input type="file" id="importFile" accept=".json" hidden>
-            </label>
-          </div>
+  <div class="auth-screen" id="authScreen">
+    <div class="auth-container">
+      <div class="auth-card">
+        <h1>PinMyTrips</h1>
+        <p>Tes voyages en famille, en sécurité</p>
+        <div id="authMessage"></div>
+        <div class="auth-tabs">
+          <button class="auth-tab active" id="loginTab">Connexion</button>
+          <button class="auth-tab" id="signupTab">Inscription</button>
         </div>
-        <div class="profile-banner">
-          <div class="profile-preview">
-            <div class="avatar" id="profileAvatar">F</div>
-            <div>
-              <div class="profile-name" id="profileName">Chargement...</div>
-              <div class="profile-role" id="profileRole">Profil famille</div>
-            </div>
-          </div>
-          <button type="button" class="btn btn-primary" id="addPlaceButton"><i data-feather="plus"></i> Ajouter</button>
-        </div>
-        <div class="toolbar-actions">
-          <input type="search" id="search" placeholder="Rechercher dans mes voyages..." autocomplete="off">
-        </div>
+        <form class="auth-form" id="authForm">
+          <input type="text" id="authEmail" placeholder="Email ou pseudo" required>
+          <input type="password" id="authPassword" placeholder="Mot de passe" required>
+          <input type="password" id="authPasswordConfirm" placeholder="Confirmer le mot de passe" required style="display:none;">
+          <button type="submit" class="btn-primary" style="width:100%;">Continuer</button>
+        </form>
       </div>
-      <section class="family-feed" aria-live="polite">
+    </div>
+  </div>
+
+  <div class="app-container" id="appContainer" style="display:none;">
+    <header class="app-header">
+      <div class="header-content">
+        <div class="header-brand">
+          <h1>PinMyTrips</h1>
+          <p>Partage tes voyages</p>
+        </div>
+        <nav class="header-actions">
+          <button class="action-btn" id="addPlaceButton"><i data-feather="plus-circle"></i><span>Nouveau</span></button>
+          <button class="action-btn" id="profileButton"><i data-feather="users"></i><span>Famille</span></button>
+          <button class="action-btn" id="themeButton"><i data-feather="moon"></i></button>
+          <button class="action-btn" id="exportButton"><i data-feather="download"></i></button>
+          <label class="action-btn"><i data-feather="upload"></i><input type="file" id="importFile" accept=".json" hidden></label>
+          <button class="action-btn" id="logoutButton"><i data-feather="log-out"></i><span>Déconnexion</span></button>
+        </nav>
+      </div>
+    </header>
+    <div class="app-main">
+      <aside class="sidebar">
+        <div class="profile-card">
+          <div class="profile-avatar" id="profileAvatar">M</div>
+          <h3 id="profileName">Chargement</h3>
+          <p id="profileRole">Profil</p>
+        </div>
+        <div class="search-box"><i data-feather="search"></i><input type="search" id="search" placeholder="Rechercher..." autocomplete="off"></div>
+        <div class="stats-widget">
+          <div class="stat"><span class="stat-number" id="totalPlaces">0</span><span class="stat-label">Voyages</span></div>
+          <div class="stat"><span class="stat-number" id="totalFav">0</span><span class="stat-label">Favoris</span></div>
+        </div>
+      </aside>
+      <section class="feed">
         <div class="feed-header">
-          <div>
-            <h2>Mur familial</h2>
-            <p>Retrouve les derniers souvenirs de chaque profil.</p>
+          <h2>Mon carnet</h2>
+          <div class="feed-filter">
+            <button class="filter-btn active" data-filter="all">Tous</button>
+            <button class="filter-btn" data-filter="fav">★ Favoris</button>
           </div>
-          <span class="feed-badge" id="feedCount">0</span>
         </div>
-        <div class="feed-list" id="feedList"></div>
+        <div class="trips-grid" id="placesList"></div>
+        <div class="empty-state" id="emptyState" style="display:none;"><i data-feather="map"></i><p>Aucun voyage</p><button class="btn-primary" id="emptyAddBtn">Ajouter</button></div>
       </section>
-      <div class="places-list" id="placesList" aria-live="polite"></div>
-    </aside>
-    <main class="map-shell">
-      <div id="map"></div>
-      <button type="button" class="btn-locate" id="locateMe" aria-label="Ma position">
-        <i data-feather="crosshair"></i>
-      </button>
-      <div class="floating-detail" id="detailPanel" aria-hidden="true">
-        <div class="detail-cover" id="detailCover">
-          <button type="button" class="detail-close" id="closeDetailButton" aria-label="Fermer le détail"><i data-feather="x"></i></button>
-        </div>
-        <div class="detail-body" id="detailBody"></div>
-      </div>
-      <nav class="mobile-nav">
-        <button class="nav-item active" onclick="switchTab('list')">
-          <i data-feather="list"></i><span>Liste</span>
-        </button>
-        <button class="nav-item" onclick="switchTab('map')">
-          <i data-feather="map"></i><span>Carte</span>
-        </button>
-      </nav>
-    </main>
-  </div>
-  <div class="welcome-screen hidden" id="welcomeScreen" aria-hidden="true">
-    <div class="welcome-card">
-      <h1>Bienvenue sur PinMyTrips</h1>
-      <p>Choisis ton profil pour démarrer le carnet familial et retrouver les souvenirs de toute la famille.</p>
-      <div class="welcome-profiles" id="welcomeProfileList"></div>
-      <button type="button" class="btn btn-primary" id="welcomeStartButton">Gérer les profils</button>
-      <p class="welcome-note">Ouvre cette page dans Safari sur ton iPhone puis appuie sur « Ajouter à l’écran d’accueil ».</p>
+      <div class="map-panel"><div id="map"></div><button class="btn-locate" id="locateMe"><i data-feather="navigation"></i></button></div>
     </div>
   </div>
-  <div class="overlay-backdrop" id="profileOverlay" aria-hidden="true">
-    <div class="overlay-panel" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
-      <div class="overlay-head">
-        <div>
-          <h2 id="profileTitle">Profils familiaux</h2>
-          <p>Choisis un profil ou ajoute un nouveau membre.</p>
-        </div>
-        <button type="button" class="btn-icon" id="closeProfileButton" aria-label="Fermer"><i data-feather="x"></i></button>
-      </div>
-      <div class="profile-list" id="profileList"></div>
-      <form id="profileForm" class="profile-form">
-        <label>
-          Nom du profil
-          <input id="p_name" required placeholder="Ex: Lena">
-        </label>
-        <label>
-          Rôle dans la famille
-          <input id="p_role" placeholder="Ex: Maman, Papa, Enfant">
-        </label>
-        <button type="submit" class="btn btn-primary">Enregistrer le profil</button>
-      </form>
-    </div>
-  </div>
-  <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <div class="modal-head">
-        <h2 id="modalTitle">Ajouter une étape</h2>
-        <button type="button" class="btn-icon" id="closeModalButton" aria-label="Fermer le modal"><i data-feather="x"></i></button>
-      </div>
-      <form id="placeForm" class="form-grid">
-        <input type="hidden" id="f_id">
-        <div class="grid-2">
-          <label>
-            Lieu
-            <input id="f_title" required placeholder="Ex: Kyoto">
-          </label>
-          <label>
-            Pays
-            <input id="f_country" required>
-          </label>
-        </div>
-        <div class="grid-2">
-          <label>
-            Dates
-            <input id="f_dates" placeholder="Ex: Mai 2026">
-          </label>
-          <label>
-            Budget total
-            <input type="number" id="f_budget" placeholder="€" min="0">
-          </label>
-        </div>
-        <label>
-          Photo souvenir (stockée localement)
-          <input type="file" id="f_photo" accept="image/*">
-          <input type="hidden" id="f_photo_b64">
-        </label>
-        <div class="grid-2">
-          <label>
-            Note de l'expérience
-            <select id="f_rating">
-              <option value="5">⭐⭐⭐⭐⭐ Incroyable</option>
-              <option value="4">⭐⭐⭐⭐ Très bien</option>
-              <option value="3">⭐⭐⭐ Sympa</option>
-              <option value="2">⭐⭐ Bof</option>
-              <option value="1">⭐ À fuir</option>
-            </select>
-          </label>
-          <label class="checkbox-label">
-            <input type="checkbox" id="f_fav"> Coup de cœur ❤️
-          </label>
-        </div>
-        <div class="grid-2">
-          <label>
-            Latitude
-            <input type="number" step="any" id="f_lat" required>
-          </label>
-          <label>
-            Longitude
-            <input type="number" step="any" id="f_lng" required>
-          </label>
-        </div>
-        <label>
-          Adresses (Restos, Bars...)
-          <textarea id="f_spots" rows="2" placeholder="Séparés par des virgules"></textarea>
-        </label>
-        <label>
-          Notes & Anecdotes
-          <textarea id="f_notes" rows="3"></textarea>
-        </label>
-        <div class="form-actions">
-          <button type="button" class="btn btn-secondary" id="btnDelete" style="display:none"><i data-feather="trash"></i></button>
-          <button type="submit" class="btn btn-primary">Enregistrer</button>
-        </div>
-      </form>
-    </div>
-  </div>
+  
+  <div class="modal-backdrop" id="modalBackdrop"><div class="modal"><div class="modal-header"><h2 id="modalTitle">Ajouter un voyage</h2><button class="btn-close" id="closeModalButton"><i data-feather="x"></i></button></div><form id="placeForm" class="form-grid"><input type="hidden" id="f_id"><div class="form-row"><label class="form-group"><span>Lieu *</span><input id="f_title" required placeholder="Ex: Kyoto"></label><label class="form-group"><span>Pays *</span><input id="f_country" required placeholder="Ex: Japon"></label></div><div class="form-row"><label class="form-group"><span>Dates</span><input id="f_dates" placeholder="Ex: Mai 2026"></label><label class="form-group"><span>Budget (€)</span><input id="f_budget" type="number" placeholder="0"></label></div><label class="form-group"><span>Notes</span><textarea id="f_notes" placeholder="Tes souvenirs..." rows="3"></textarea></label><div class="form-row"><label class="form-group"><span>Note ★</span><select id="f_rating"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></label><label class="checkbox-label"><input type="checkbox" id="f_fav"><span>Favori ★</span></label></div><label class="form-group"><span>Photo</span><input id="f_photo" type="file" accept="image/*"><img id="f_photo_preview" style="max-width:100%;margin-top:0.5rem;border-radius:8px;display:none;"></label><input type="hidden" id="f_lat"><input type="hidden" id="f_lng"><input type="hidden" id="f_spots"><input type="hidden" id="f_photo_b64"><div class="form-actions"><button type="button" class="btn-secondary" id="closeFormButton">Annuler</button><button type="submit" class="btn-primary">Enregistrer</button><button type="button" class="btn-danger" id="btnDelete" style="display:none;">Supprimer</button></div></form></div></div>
+  
+  <div class="overlay-backdrop" id="profileOverlay"><div class="overlay-panel"><div class="overlay-head"><h2>Gérer les profils</h2><button class="btn-close" id="closeProfileButton"><i data-feather="x"></i></button></div><div class="profile-list" id="profileList"></div><form id="profileForm" class="profile-form"><h3>Ajouter un profil</h3><label class="form-group"><span>Nom</span><input id="p_name" required placeholder="Ex: Lena"></label><label class="form-group"><span>Rôle</span><input id="p_role" placeholder="Ex: Maman"></label><button type="submit" class="btn-primary">Créer</button></form></div></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/lucide@latest"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-  <script src="app.js" defer></script>
+  <script src="app.js"></script>
 </body>
 </html>
