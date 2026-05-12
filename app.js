@@ -36,6 +36,7 @@ const refs = {
   feedList: document.getElementById('feedList'),
   feedCount: document.getElementById('feedCount'),
   welcomeScreen: document.getElementById('welcomeScreen'),
+  welcomeProfileList: document.getElementById('welcomeProfileList'),
   welcomeStartButton: document.getElementById('welcomeStartButton'),
   formFields: {
     id: document.getElementById('f_id'),
@@ -165,6 +166,30 @@ function renderProfileList() {
   refs.profileList.appendChild(fragment);
 }
 
+function renderWelcomeProfiles() {
+  const container = refs.welcomeProfileList;
+  container.innerHTML = '';
+  if (!profiles.length) {
+    container.innerHTML = '<div class="empty-state">Aucun profil disponible. Crée un profil pour commencer.</div>';
+    return;
+  }
+  const fragment = document.createDocumentFragment();
+  profiles.forEach(profile => {
+    const item = document.createElement('button');
+    item.type = 'button';
+    item.className = `profile-item ${profile.id === currentProfileId ? 'active' : ''}`;
+    item.innerHTML = `
+      <span class="profile-avatar" style="background:${profile.color}">${profile.name.charAt(0).toUpperCase()}</span>
+      <span><strong>${profile.name}</strong><small>${profile.role || 'Membre'}</small></span>`;
+    item.addEventListener('click', async () => {
+      await setCurrentProfile(profile.id);
+      hideWelcomeScreen();
+    });
+    fragment.appendChild(item);
+  });
+  container.appendChild(fragment);
+}
+
 function openProfileOverlay() {
   refs.profileOverlay.classList.add('open');
   refs.profileOverlay.setAttribute('aria-hidden', 'false');
@@ -178,6 +203,7 @@ function closeProfileOverlay() {
 }
 
 function showWelcomeScreen() {
+  renderWelcomeProfiles();
   if (!localStorage.getItem(SEEN_WELCOME_KEY)) {
     refs.welcomeScreen.classList.remove('hidden');
     refs.welcomeScreen.setAttribute('aria-hidden', 'false');

@@ -26,11 +26,11 @@
             <p class="brand-subtitle">Carnet familial de voyages et mur de souvenirs.</p>
           </div>
           <div class="brand-actions">
-            <button type="button" class="btn-icon" id="profileButton" aria-label="Ouvrir le menu Famille"><i data-feather="users"></i></button>
-            <button type="button" class="btn-icon" id="themeButton" aria-label="Basculer le thème"><i data-feather="moon"></i></button>
-            <button type="button" class="btn-icon" id="exportButton" aria-label="Exporter les données"><i data-feather="download"></i></button>
+            <button type="button" class="btn-icon" id="profileButton" aria-label="Ouvrir le menu Famille"><i data-feather="users"></i><span>Famille</span></button>
+            <button type="button" class="btn-icon" id="themeButton" aria-label="Basculer le thème"><i data-feather="moon"></i><span>Thème</span></button>
+            <button type="button" class="btn-icon" id="exportButton" aria-label="Exporter les données"><i data-feather="download"></i><span>Exporter</span></button>
             <label class="btn-icon" aria-label="Importer les données">
-              <i data-feather="upload"></i>
+              <i data-feather="upload"></i><span>Importer</span>
               <input type="file" id="importFile" accept=".json" hidden>
             </label>
           </div>
@@ -85,8 +85,9 @@
   <div class="welcome-screen hidden" id="welcomeScreen" aria-hidden="true">
     <div class="welcome-card">
       <h1>Bienvenue sur PinMyTrips</h1>
-      <p>Crée ton profil, garde les souvenirs de voyage et partage un mur familial privé.</p>
-      <button type="button" class="btn btn-primary" id="welcomeStartButton">Créer un profil</button>
+      <p>Choisis ton profil pour démarrer le carnet familial et retrouver les souvenirs de toute la famille.</p>
+      <div class="welcome-profiles" id="welcomeProfileList"></div>
+      <button type="button" class="btn btn-primary" id="welcomeStartButton">Gérer les profils</button>
       <p class="welcome-note">Ouvre cette page dans Safari sur ton iPhone puis appuie sur « Ajouter à l’écran d’accueil ».</p>
     </div>
   </div>
