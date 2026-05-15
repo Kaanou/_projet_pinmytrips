@@ -12,6 +12,22 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div class="welcome-screen" id="welcomeScreen">
+    <div class="welcome-container">
+      <div class="welcome-content">
+        <h1>PinMyTrips</h1>
+        <p class="welcome-subtitle">📍 Tes voyages en famille</p>
+        <div class="welcome-features">
+          <div class="feature"><i data-feather="map-pin"></i><span>Localise tes voyages</span></div>
+          <div class="feature"><i data-feather="users"></i><span>Partage avec ta famille</span></div>
+          <div class="feature"><i data-feather="star"></i><span>Marque tes favoris</span></div>
+          <div class="feature"><i data-feather="navigation"></i><span>Calcule tes km</span></div>
+        </div>
+        <button class="btn-primary" id="startBtn" style="width:100%;font-size:1.1rem;padding:1rem;">Commencer</button>
+      </div>
+    </div>
+  </div>
+
   <div class="auth-screen" id="authScreen">
     <div class="auth-container">
       <div class="auth-card">
@@ -59,7 +75,7 @@
         <div class="search-box"><i data-feather="search"></i><input type="search" id="search" placeholder="Rechercher..." autocomplete="off"></div>
         <div class="stats-widget">
           <div class="stat"><span class="stat-number" id="totalPlaces">0</span><span class="stat-label">Voyages</span></div>
-          <div class="stat"><span class="stat-number" id="totalFav">0</span><span class="stat-label">Favoris</span></div>
+          <div class="stat"><span class="stat-number" id="totalKm">0</span><span class="stat-label">Km</span></div>
         </div>
       </aside>
       <section class="feed">
@@ -77,9 +93,65 @@
     </div>
   </div>
   
-  <div class="modal-backdrop" id="modalBackdrop"><div class="modal"><div class="modal-header"><h2 id="modalTitle">Ajouter un voyage</h2><button class="btn-close" id="closeModalButton"><i data-feather="x"></i></button></div><form id="placeForm" class="form-grid"><input type="hidden" id="f_id"><div class="form-row"><label class="form-group"><span>Lieu *</span><input id="f_title" required placeholder="Ex: Kyoto"></label><label class="form-group"><span>Pays *</span><input id="f_country" required placeholder="Ex: Japon"></label></div><div class="form-row"><label class="form-group"><span>Dates</span><input id="f_dates" placeholder="Ex: Mai 2026"></label><label class="form-group"><span>Budget (€)</span><input id="f_budget" type="number" placeholder="0"></label></div><label class="form-group"><span>Notes</span><textarea id="f_notes" placeholder="Tes souvenirs..." rows="3"></textarea></label><div class="form-row"><label class="form-group"><span>Note ★</span><select id="f_rating"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></label><label class="checkbox-label"><input type="checkbox" id="f_fav"><span>Favori ★</span></label></div><label class="form-group"><span>Photo</span><input id="f_photo" type="file" accept="image/*"><img id="f_photo_preview" style="max-width:100%;margin-top:0.5rem;border-radius:8px;display:none;"></label><input type="hidden" id="f_lat"><input type="hidden" id="f_lng"><input type="hidden" id="f_spots"><input type="hidden" id="f_photo_b64"><div class="form-actions"><button type="button" class="btn-secondary" id="closeFormButton">Annuler</button><button type="submit" class="btn-primary">Enregistrer</button><button type="button" class="btn-danger" id="btnDelete" style="display:none;">Supprimer</button></div></form></div></div>
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modalTitle">Ajouter un voyage</h2>
+        <button class="btn-close" id="closeModalButton"><i data-feather="x"></i></button>
+      </div>
+      <form id="placeForm" class="form-grid">
+        <input type="hidden" id="f_id">
+        <div class="form-row">
+          <label class="form-group"><span>Lieu *</span><input id="f_title" required placeholder="Ex: Kyoto"></label>
+          <label class="form-group"><span>Pays *</span><input id="f_country" required placeholder="Ex: Japon"></label>
+        </div>
+        <div class="form-row">
+          <label class="form-group"><span>Dates</span><input id="f_dates" placeholder="Ex: Mai 2026"></label>
+          <label class="form-group"><span>Catégorie</span><select id="f_category">
+            <option value="autre">Autre</option>
+            <option value="logement">🏨 Logement</option>
+            <option value="restaurant">🍽️ Restaurant</option>
+            <option value="attraction">🎭 Attraction</option>
+            <option value="transport">🚗 Transport</option>
+          </select></label>
+        </div>
+        <div class="form-row">
+          <label class="form-group"><span>Budget (€)</span><input id="f_budget" type="number" placeholder="0"></label>
+          <label class="form-group"><span>Note ★</span><select id="f_rating">
+            <option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+          </select></label>
+        </div>
+        <label class="form-group"><span>Notes</span><textarea id="f_notes" placeholder="Tes souvenirs..." rows="3"></textarea></label>
+        <div class="form-row">
+          <label class="checkbox-label"><input type="checkbox" id="f_fav"><span>Favori ★</span></label>
+        </div>
+        <label class="form-group"><span>Photo</span><input id="f_photo" type="file" accept="image/*"><img id="f_photo_preview" style="max-width:100%;margin-top:0.5rem;border-radius:8px;display:none;"></label>
+        <input type="hidden" id="f_lat"><input type="hidden" id="f_lng"><input type="hidden" id="f_spots"><input type="hidden" id="f_photo_b64">
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" id="closeFormButton">Annuler</button>
+          <button type="submit" class="btn-primary">Enregistrer</button>
+          <button type="button" class="btn-danger" id="btnDelete" style="display:none;">Supprimer</button>
+        </div>
+      </form>
+    </div>
+  </div>
   
-  <div class="overlay-backdrop" id="profileOverlay"><div class="overlay-panel"><div class="overlay-head"><h2>Gérer les profils</h2><button class="btn-close" id="closeProfileButton"><i data-feather="x"></i></button></div><div class="profile-list" id="profileList"></div><form id="profileForm" class="profile-form"><h3>Ajouter un profil</h3><label class="form-group"><span>Nom</span><input id="p_name" required placeholder="Ex: Lena"></label><label class="form-group"><span>Rôle</span><input id="p_role" placeholder="Ex: Maman"></label><button type="submit" class="btn-primary">Créer</button></form></div></div>
+  <div class="overlay-backdrop" id="profileOverlay">
+    <div class="overlay-panel">
+      <div class="overlay-head">
+        <h2>Gérer les profils</h2>
+        <button class="btn-close" id="closeProfileButton"><i data-feather="x"></i></button>
+      </div>
+      <div class="profile-list" id="profileList"></div>
+      <form id="profileForm" class="profile-form">
+        <h3>Ajouter un profil</h3>
+        <label class="form-group"><span>Nom</span><input id="p_name" required placeholder="Ex: Lena"></label>
+        <label class="form-group"><span>Rôle</span><input id="p_role" placeholder="Ex: Maman"></label>
+        <label class="checkbox-label"><input type="checkbox" id="p_public"><span>🔗 Profil public</span></label>
+        <button type="submit" class="btn-primary">Créer</button>
+      </form>
+    </div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/lucide@latest"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
